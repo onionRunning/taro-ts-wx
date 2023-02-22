@@ -1,22 +1,10 @@
 import { Component, PropsWithChildren } from 'react'
-import { View, Text, Swiper, SwiperItem, Image  } from '@tarojs/components'
-import { AtIcon, AtTabBar, AtGrid, AtNoticebar } from 'taro-ui'
-
-import "taro-ui/dist/style/components/button.scss" // 按需引入
-import "taro-ui/dist/style/components/tab-bar.scss"
-import "taro-ui/dist/style/components/badge.scss"
-import "taro-ui/dist/style/components/icon.scss"
-import "taro-ui/dist/style/components/search-bar.scss";
-import "taro-ui/dist/style/components/grid.scss";
-import "taro-ui/dist/style/components/noticebar.scss";
+import { View, Text, Swiper, SwiperItem, Image, Button  } from '@tarojs/components'
+import { Grid, GridItem, Icon, NoticeBar, Tabbar, TabbarItem } from '@nutui/nutui-react-taro';
 
 import './index.scss'
 
 export default class Index extends Component<PropsWithChildren, {current: number}> {
-  setState(_arg0: { current: any }) {
-    throw new Error('Method not implemented.')
-  }
-  state: { current: number }
   constructor (props) {
     super(props)
     this.state = {
@@ -40,14 +28,59 @@ export default class Index extends Component<PropsWithChildren, {current: number
     console.log('开始搜索')
   }
   render () {
+
+    const contents = () => {
+      return [1,2,3,4,5].map((_, index) => {
+        return (
+          <View key={index} className='zf-item'>
+            <Image mode='center' className='imgs'  src='https://img0.baidu.com/it/u=2396240290,1190384795&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'></Image>
+            <View className='right'>
+              <View className='title-view'>
+                <Text className='title-text'>佐敦一期公寓(单人间)</Text>
+              </View>
+              <View className='sx'>
+                <Text className='sx-dt'>地铁: 佐敦地铁站A出口</Text>
+                <Text className='sx-xx'>大学: 理工 港大 城大 都会 浸会</Text>
+              </View>
+              <View className='bq'>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>长租</Text>
+                </View>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>月租</Text>
+                </View>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>单人间</Text>
+                </View>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>1楼超大面积公区</Text>
+                </View>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>干湿分离浴</Text>
+                </View>
+                <View className='btn-icon'>
+                  <Text className='btn-text'>香港美食</Text>
+                </View>
+              </View>
+              <View className='money'>
+                <Text>HK$</Text><Text className='color'>5500.00</Text><Text>起/月</Text>
+              </View>
+            </View>
+          </View>
+        )
+      })
+    }
+
     return (
       <View className='index'>
         <View className='search-wrapper'>
-          <View>
-            <AtIcon className='search' value='search' size='20' color='#fff'></AtIcon>
-            <Text className='text'>想来测试当前框架，测试00123</Text>
+          <View className='search-content'>
+            <View>
+              <Icon className='search' name='search' size='14'></Icon>
+              <Text className='text'>你想住哪儿,试试搜公寓/大学</Text>
+            </View>
+            <View className='btn'><Text className='btn-text'>搜索</Text></View>
           </View>
-          <View className='btn'><Text className='btn-text'>继续</Text></View>
         </View>
 
         <Swiper
@@ -76,50 +109,73 @@ export default class Index extends Component<PropsWithChildren, {current: number
           </SwiperItem>
         </Swiper>
 
-        <AtGrid className='grid' data={lists} columnNum={5} hasBorder={false} />
+        <Grid columnNum={5} border={false}>
+          <GridItem icon='dongdong' text='闲置二手' />
+          <GridItem icon='dongdong' text='积分签到' />
+          <GridItem icon='dongdong' text='公寓直播' />
+          <GridItem icon='dongdong' text='进群有礼' />
+          <GridItem icon='dongdong' text='微信客服' />
+          <GridItem icon='dongdong' text='住房须知' />
+        </Grid>
 
-        <AtNoticebar className='notice' icon='volume-plus'>这是 NoticeBar 通告栏</AtNoticebar>
+        <NoticeBar
+          className='custom'
+          direction='vertical'
+          list={horseLamp1}
+          speed={6}
+          background='#fff'
+          standTime={3000}
+          rightIcon={<Icon name='fabulous' size='16' color='#f0250f' />}
+        />
+
         <View className='line'></View>
 
-        <AtTabBar
-          tabList={[
-          { title: '首页', iconType: 'home'},
-          { title: '发现', iconType: 'search' },
-          { title: '我的', iconType: 'user'}
-        ]}
-          onClick={this.handleClick.bind(this)}
-          current={this.state.current}
-          fixed
-        />
+        <View className='box'>
+          <View className='select'>
+            <View className='select-item'>
+              <Text className='select-text'>租期</Text>
+              <Icon name='triangle-down'></Icon>
+            </View>
+            <View className='select-item'>
+              <Text className='select-text'>学校</Text>
+              <Icon name='triangle-down'></Icon>
+            </View>
+            <View className='select-item'>
+              <Text className='select-text'>筛选</Text>
+              <Icon name='triangle-down'></Icon>
+            </View>
+            <View className='select-item'>
+              <Text className='select-text'>综合</Text>
+              <Icon name='triangle-down'></Icon>
+            </View>
+          </View>
+
+          <View className='btn-wrapper'>
+            <View className='btn-icon'>
+              <Text className='btn-text'>只看有房</Text>
+            </View>
+            <View className='btn-icon btn-left'>
+              <Text className='btn-text'>iRent自营</Text>
+            </View>
+          </View>
+        </View>
+
+        {contents()}
+        <View className='empty'></View>
+        <Tabbar onSwitch={(child, idx) => {console.log(idx)}} bottom>
+          <TabbarItem tabTitle='首页' icon='home' />
+          <TabbarItem tabTitle='发现' icon='find' />
+          <TabbarItem tabTitle='我的' icon='my' />
+        </Tabbar>
       </View>
     )
   }
 }
 
 
-const lists = [
-  {
-    image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-    value: '二手'
-  },
-  {
-    image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-    value: '积分'
-  },
-  {
-    image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
-    value: '领会员'
-  },
-  {
-    image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
-    value: '新品首发'
-  },
-  {
-    image: 'https://img14.360buyimg.com/jdphoto/s72x72_jfs/t17251/336/1311038817/3177/72595a07/5ac44618Na1db7b09.png',
-    value: '领京豆'
-  },
-  {
-    image: 'https://img30.360buyimg.com/jdphoto/s72x72_jfs/t5770/97/5184449507/2423/294d5f95/595c3b4dNbc6bc95d.png',
-    value: '手机馆'
-  }
+
+const horseLamp1 = [
+  '新用户奖励,领取30积分',
+  '登陆小程序奖励,领取10积分',
+  '首次查看公寓,领取10积分',
 ]
